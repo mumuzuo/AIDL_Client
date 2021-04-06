@@ -20,13 +20,13 @@ public class DataTempSaveUtils {
     }
 
 
-    private SocketParseBean socketParseBean;
+    private DataBean dataBean;
 
-    public SocketParseBean getSocketParseBean() {
-        return socketParseBean;
+    public DataBean getDataBean() {
+        return dataBean;
     }
 
-    public void setSocketParseBean(SocketParseBean socketParseBean) {
-        this.socketParseBean = socketParseBean;
+    public void setDataBean(DataBean dataBean) {
+        this.dataBean = dataBean;
     }
 }

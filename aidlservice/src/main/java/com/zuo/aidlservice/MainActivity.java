@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Integer> data;
     @IntRange(from = 0, to = 3)
     private int index = 0;
+    private IMyAidlInterface clientAidl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] array = null;
         if (null != bmp) {
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            bmp.compress(Bitmap.CompressFormat.PNG, 85, baos);
             array = baos.toByteArray();
         }
-        SocketParseBean socketParseBean = new SocketParseBean(hint, array);
-        DataTempSaveUtils.getInstance().setSocketParseBean(socketParseBean);
+        DataBean dataBean = new DataBean(hint, array);
+        DataTempSaveUtils.getInstance().setDataBean(dataBean);
     }
 
     /**
@@ -78,13 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            IMyAIDLService iMyAIDLService = IMyAIDLService.Stub.asInterface(service);
-            try {
-                SocketParseBean data = iMyAIDLService.getData();
-                binding.backMsgShow.setText(data.getInfo());
-            } catch (Exception e) {
-                Log.i(TAG, "onServiceConnected: " + e.getMessage());
-            }
+            clientAidl = IMyAidlInterface.Stub.asInterface(service);
+//            showClientMsg();
 
         }
 
@@ -93,6 +88,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    /*private void showClientMsg() {
+        String text = "";
+        try {
+            text =  ((MyBinder)clientAidl).clientHint;
+        } catch (Exception e) {
+            Log.i(TAG, "onServiceConnected: " + e.getMessage());
+        }
+        binding.backMsgShow.setText(text);
+    }*/
 
 
     public class Presenter {

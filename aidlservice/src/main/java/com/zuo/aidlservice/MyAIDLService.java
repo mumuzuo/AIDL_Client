@@ -3,7 +3,6 @@ package com.zuo.aidlservice;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteException;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +13,10 @@ import androidx.annotation.Nullable;
  * @date 2020/5/12 14:55
  */
 public class MyAIDLService extends Service {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     @Nullable
     @Override
@@ -21,11 +24,4 @@ public class MyAIDLService extends Service {
         return new MyBinder();
     }
 
-    static class MyBinder extends IMyAIDLService.Stub {
-
-        @Override
-        public SocketParseBean getData() throws RemoteException {
-            return DataTempSaveUtils.getInstance().getSocketParseBean();
-        }
-    }
 }
